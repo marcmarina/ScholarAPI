@@ -19,6 +19,10 @@ app.use((req, res, next) => {
   next();
 });
 
+const userRoutes = require("./routes/user");
+
+app.use(userRoutes);
+
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;
