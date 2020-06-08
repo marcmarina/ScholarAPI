@@ -84,3 +84,13 @@ exports.signup = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.show = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId).populate("subjects");
+    res.status(200).json(user);
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+};

@@ -58,4 +58,6 @@ router.post(
   userController.login
 );
 
+router.get("/users/:userId", isAuth, userController.show);
+
 module.exports = router;

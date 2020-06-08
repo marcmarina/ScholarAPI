@@ -20,8 +20,10 @@ app.use((req, res, next) => {
 });
 
 const userRoutes = require("./routes/user");
-
 app.use(userRoutes);
+
+const subjectRoutes = require("./routes/subject");
+app.use(subjectRoutes);
 
 app.use((error, req, res, next) => {
   console.log(error);
