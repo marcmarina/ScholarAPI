@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "API for the Scholar app.",
   "main": "app.js",
+  "engines": {
+    "node": "14.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js"
