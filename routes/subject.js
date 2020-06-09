@@ -9,6 +9,8 @@ const isAuth = require("../middleware/is-auth");
 
 const NAME_MIN_LENGTH = 3;
 
+router.get("/subjects", isAuth, subjectController.index);
+
 router.get("/subjects/:subjectId", isAuth, subjectController.show);
 
 router.post(
@@ -23,7 +25,10 @@ router.post(
       ),
     check("targetHours")
       .isNumeric()
-      .withMessage("The target hours fiels has to be a number."),
+      .withMessage("The target hours field has to be a number."),
+    check("frequencyBreaks")
+      .isNumeric()
+      .withMessage("The frequency of breaks field must be a number."),
   ],
   subjectController.create
 );

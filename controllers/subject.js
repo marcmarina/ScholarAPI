@@ -9,6 +9,24 @@ const ErrorHandler = require("../util/error-handler");
 const Utils = require("../util/utils");
 const env = require("../util/env");
 
+exports.index = async (req, res, next) => {
+  const errorHandler = new ErrorHandler(validationResult(req));
+
+  if (errorHandler.errors.size > 0) {
+    return res.status(401).json({
+      errors: errorHandler.getErrors(),
+    });
+  }
+
+  try {
+    const subjects = await Subject.find({ user: req.userId });
+    res.status(200).json(subjects);
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+};
+
 exports.create = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
@@ -20,12 +38,14 @@ exports.create = async (req, res, next) => {
 
   const name = req.body.name;
   const targetHours = req.body.targetHours;
+  const frequencyBreaks = req.body.frequencyBreaks;
 
   try {
     const subject = new Subject({
       name: name,
       targetHours: targetHours,
       user: req.userId,
+      frequencyBreaks: frequencyBreaks,
     });
 
     const savedSubject = await subject.save();
