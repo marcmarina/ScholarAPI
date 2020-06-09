@@ -62,8 +62,13 @@ exports.create = async (req, res, next) => {
 };
 
 exports.show = async (req, res, next) => {
+  const errorHandler = new ErrorHandler();
   try {
     const subject = await Subject.findById(req.params.subjectId);
+    if (!subject) {
+      errorHandler.addError("subject", "Subject not found.");
+      return res.status(404).json({ errors: errorHandler.getErrors() });
+    }
     res.status(200).json(subject);
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
