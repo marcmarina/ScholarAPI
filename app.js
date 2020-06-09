@@ -37,8 +37,10 @@ app.use((error, req, res, next) => {
   });
 });
 
+const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}-csgin.mongodb.net/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`;
+
 mongoose
-  .connect(env.getMongoDBUri(), {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
