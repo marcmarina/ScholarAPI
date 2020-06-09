@@ -9,6 +9,7 @@ const isAuth = require("../middleware/is-auth");
 
 const NAME_MIN_LENGTH = 3;
 
+// Returns all subjects for the authenticated user
 router.get("/subjects", isAuth, subjectController.index);
 
 router.get("/subjects/:subjectId", isAuth, subjectController.show);

@@ -1,13 +1,8 @@
 const { validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
 const User = require("../models/User");
 const Subject = require("../models/Subject");
 
 const ErrorHandler = require("../util/error-handler");
-const Utils = require("../util/utils");
-const env = require("../util/env");
 
 exports.index = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
