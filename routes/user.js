@@ -60,4 +60,7 @@ router.post(
 
 router.get("/users/:userId", isAuth, userController.show);
 
+// Deletes the authenticated user
+router.delete("/users", isAuth, userController.delete);
+
 module.exports = router;

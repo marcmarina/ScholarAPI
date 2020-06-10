@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
+const Subject = require("../models/Subject");
+const StudySession = require("../models/StudySession");
 
 const ErrorHandler = require("../util/error-handler");
 const Utils = require("../util/utils");
@@ -91,6 +93,28 @@ exports.show = async (req, res, next) => {
     if (!user)
       return res.status(404).json({ errors: { user: ["User not found."] } });
     res.status(200).json(user);
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    const subjectIds = [...user.subjects];
+
+    const studySessions = await StudySession.find({
+      subject: {
+        $in: subjectIds,
+      },
+    });
+    const studySessionIds = studySessions.map(i => i._id);
+
+    await StudySession.deleteMany({ _id: { $in: studySessionIds } });
+    await Subject.deleteMany({ _id: { $in: subjectIds } });
+    await user.remove();
+    res.status(200).json();
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);

@@ -63,9 +63,9 @@ exports.delete = async (req, res, next) => {
         .json({ errors: { studySession: ["Session not found."] } });
 
     const subject = await Subject.findById(studySession.subject);
-    await StudySession.findByIdAndDelete(studySessionId);
     subject.studySessions.pull(studySession._id);
     await subject.save();
+    await studySession.remove();
     res.status(200).json();
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
