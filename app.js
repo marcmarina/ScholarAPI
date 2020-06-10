@@ -25,6 +25,9 @@ app.use(userRoutes);
 const subjectRoutes = require("./routes/subject");
 app.use(subjectRoutes);
 
+const studySessionRoutes = require("./routes/studySession");
+app.use(studySessionRoutes);
+
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;

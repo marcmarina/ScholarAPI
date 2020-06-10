@@ -7,11 +7,8 @@ const ErrorHandler = require("../util/error-handler");
 exports.index = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
-  if (errorHandler.errors.size > 0) {
-    return res.status(401).json({
-      errors: errorHandler.getErrors(),
-    });
-  }
+  if (errorHandler.errors.size > 0)
+    return res.status(401).json({ errors: errorHandler.getErrors() });
 
   try {
     const subjects = await Subject.find({ user: req.userId });
@@ -25,11 +22,8 @@ exports.index = async (req, res, next) => {
 exports.create = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
-  if (errorHandler.errors.size > 0) {
-    return res.status(401).json({
-      errors: errorHandler.getErrors(),
-    });
-  }
+  if (errorHandler.errors.size > 0)
+    return res.status(422).json({ errors: errorHandler.getErrors() });
 
   const name = req.body.name;
   const targetHours = req.body.targetHours;
@@ -56,6 +50,7 @@ exports.create = async (req, res, next) => {
   }
 };
 
+// Returns all subjects for the authenticated user
 exports.show = async (req, res, next) => {
   const errorHandler = new ErrorHandler();
   try {

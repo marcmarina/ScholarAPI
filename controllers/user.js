@@ -12,7 +12,7 @@ exports.login = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
   if (errorHandler.errors.size > 0) {
-    res.status(422).json({
+    return res.status(422).json({
       errors: errorHandler.getErrors(),
     });
   }
@@ -88,6 +88,8 @@ exports.signup = async (req, res, next) => {
 exports.show = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId).populate("subjects");
+    if (!user)
+      return res.status(404).json({ errors: { user: ["User not found."] } });
     res.status(200).json(user);
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
