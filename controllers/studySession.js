@@ -52,3 +52,23 @@ exports.create = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.delete = async (req, res, next) => {
+  const studySessionId = req.params.studySessionId;
+  try {
+    const studySession = await StudySession.findById(studySessionId);
+    if (!studySession)
+      return res
+        .status(404)
+        .json({ errors: { studySession: ["Session not found."] } });
+
+    const subject = await Subject.findById(studySession.subject);
+    await StudySession.findByIdAndDelete(studySessionId);
+    subject.studySessions.pull(studySession._id);
+    await subject.save();
+    res.status(200).json();
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+};

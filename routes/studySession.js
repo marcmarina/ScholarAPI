@@ -25,4 +25,10 @@ router.post(
   studySessionController.create
 );
 
+router.delete(
+  "/studySessions/:studySessionId",
+  isAuth,
+  studySessionController.delete
+);
+
 module.exports = router;
