@@ -87,9 +87,10 @@ exports.signup = async (req, res, next) => {
   }
 };
 
+// Shows the info of the authenticated user
 exports.show = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.userId).populate("subjects");
+    const user = await User.findById(req.userId).populate("subjects");
     if (!user)
       return res.status(404).json({ errors: { user: ["User not found."] } });
     res.status(200).json(user);
