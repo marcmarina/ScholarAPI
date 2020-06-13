@@ -58,7 +58,7 @@ router.post(
   userController.login
 );
 
-router.get("/users/:userId", isAuth, userController.show);
+router.get("/users", isAuth, userController.show);
 
 // Deletes the authenticated user
 router.delete("/users", isAuth, userController.delete);
