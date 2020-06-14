@@ -27,6 +27,7 @@ const subjectSchema = new Schema({
       ref: "StudySession",
     },
   ],
+  progressHistory: Map,
 });
 
 subjectSchema.methods.getProgressHistory = async function () {
@@ -50,6 +51,41 @@ subjectSchema.methods.getProgressHistory = async function () {
       map.set(k, v);
     });
     return progressHistory;
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    throw err;
+  }
+};
+
+subjectSchema.methods.updateProgressHistory = async function () {
+  let progressHistory = new Map();
+  try {
+    const key = moment().startOf("isoWeek");
+
+    const studySessions = await StudySession.find({
+      subject: this._id,
+      date: {
+        $gte: key,
+      },
+    });
+    studySessions.forEach(session => {
+      v = session.duration;
+      v /= this.targetHours * 60;
+      v *= 100;
+      v = Math.fround(v);
+      let key = moment(session.date)
+        .startOf("isoWeek")
+        .toDate()
+        .toLocaleDateString();
+      if (progressHistory.has(key)) {
+        progressHistory.set(key, progressHistory.get(key) + v);
+      } else {
+        progressHistory.set(key, v);
+      }
+    });
+    this.progressHistory = progressHistory;
+    console.log(progressHistory);
+    await this.save();
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     throw err;

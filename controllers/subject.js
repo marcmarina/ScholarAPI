@@ -72,7 +72,10 @@ exports.progressHistory = async (req, res, next) => {
     const subject = await Subject.findById(subjectId);
     if (!subject)
       return res.status(404).json({ errors: ["Subject not found."] });
-    console.log(await subject.getProgressHistory());
+
+    await subject.updateProgressHistory();
+
+    return res.json({ a: "b" });
     res
       .status(200)
       .json(Object.fromEntries(await subject.getProgressHistory()));
