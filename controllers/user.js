@@ -131,3 +131,27 @@ exports.progressHistory = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.changePassword = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user)
+      return res.status(404).json({ errors: { user: ["User not found."] } });
+
+    const isEqual = await bcrypt.compare(req.body.oldPassword, user.password);
+
+    if (isEqual) {
+      user.password = await Utils.encryptString(req.body.newPassword);
+    } else {
+      return res.status(403).json({
+        errors: { oldPassword: ["The current password is wrong."] },
+      });
+    }
+
+    await user.save();
+    return res.status(204).json();
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+};
