@@ -73,12 +73,7 @@ exports.progressHistory = async (req, res, next) => {
     if (!subject)
       return res.status(404).json({ errors: ["Subject not found."] });
 
-    await subject.updateProgressHistory();
-
-    return res.json({ a: "b" });
-    res
-      .status(200)
-      .json(Object.fromEntries(await subject.getProgressHistory()));
+    res.status(200).json(Object.fromEntries(subject.progressHistory));
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);

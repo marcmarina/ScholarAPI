@@ -46,6 +46,7 @@ exports.create = async (req, res, next) => {
     const result = await session.save();
     subject.studySessions.push(result._id);
     await subject.save();
+    await subject.updateProgressHistory();
     res.status(201).json();
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
