@@ -40,7 +40,7 @@ userSchema.methods.getProgressHistory = async function () {
     const subjects = await Subject.find({ user: this._id });
     const progressHistory = new Map();
     for (s of subjects) {
-      const subjectHistory = await s.getProgressHistory();
+      const subjectHistory = await s.progressHistory;
       subjectHistory.forEach((v, k) => {
         v = v > 100 ? 100 : v;
         v /= subjects.length;
