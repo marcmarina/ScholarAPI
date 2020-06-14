@@ -3,9 +3,13 @@
   "version": "0.0.1",
   "description": "API for the Scholar app.",
   "main": "app.js",
+  "engines": {
+    "node": "14.2.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "test": "mocha",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +22,10 @@
   },
   "homepage": "https://github.com/marcmarina/ScholarAPI-Node#readme",
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "chai": "^4.2.0",
+    "mocha": "^7.2.0",
+    "nodemon": "^2.0.4",
+    "sinon": "^9.0.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -27,6 +34,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.5.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.26.0",
     "mongoose": "^5.9.18"
   }
 }
