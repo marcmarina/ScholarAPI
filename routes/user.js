@@ -63,4 +63,6 @@ router.get("/users", isAuth, userController.show);
 // Deletes the authenticated user
 router.delete("/users", isAuth, userController.delete);
 
+router.get("/users/progressHistory", isAuth, userController.progressHistory);
+
 module.exports = router;

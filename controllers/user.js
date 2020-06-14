@@ -121,3 +121,13 @@ exports.delete = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.progressHistory = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userId);
+    res.status(200).json(Object.fromEntries(await user.getProgressHistory()));
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    next(err);
+  }
+};
