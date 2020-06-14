@@ -34,4 +34,6 @@ const userSchema = new Schema(
   }
 );
 
+userSchema.methods.getProgressHistory = async function () {};
+
 module.exports = mongoose.model("User", userSchema);

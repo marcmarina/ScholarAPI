@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const moment = require("moment");
+
+const StudySession = require("./StudySession");
 
 const subjectSchema = new Schema({
   name: {
@@ -25,5 +28,32 @@ const subjectSchema = new Schema({
     },
   ],
 });
+
+subjectSchema.methods.getProgressHistory = async function () {
+  try {
+    const progressHistory = new Map();
+    const studySessions = await StudySession.find({ subject: this._id });
+
+    studySessions.forEach(s => {
+      let key;
+      key = moment(s.date).startOf("isoWeek").toDate().toLocaleDateString();
+      if (progressHistory.has(key)) {
+        progressHistory.set(key, progressHistory.get(key) + s.duration);
+      } else {
+        progressHistory.set(key, s.duration);
+      }
+    });
+    progressHistory.forEach((v, k, map) => {
+      v /= this.targetHours * 60;
+      v *= 100;
+      v = Math.fround(v);
+      map.set(k, v);
+    });
+    return progressHistory;
+  } catch (err) {
+    if (!err.statusCode) err.statusCode = 500;
+    throw err;
+  }
+};
 
 module.exports = mongoose.model("Subject", subjectSchema);

@@ -34,4 +34,10 @@ router.post(
   subjectController.create
 );
 
+router.get(
+  "/subjects/progressHistory/:subjectId",
+  isAuth,
+  subjectController.progressHistory
+);
+
 module.exports = router;
