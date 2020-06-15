@@ -1,6 +1,6 @@
 {
   "name": "scholarapi-node",
-  "version": "0.0.1",
+  "version": "0.1",
   "description": "API for the Scholar app.",
   "main": "app.js",
   "engines": {
