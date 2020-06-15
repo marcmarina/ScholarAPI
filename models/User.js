@@ -29,13 +29,14 @@ const userSchema = new Schema(
         ref: "Subject",
       },
     ],
+    progressHistory: Map,
   },
   {
     timestamps: true,
   }
 );
 
-userSchema.methods.getProgressHistory = async function () {
+userSchema.methods.updateProgressHistory = async function () {
   try {
     const subjects = await Subject.find({ user: this._id });
     const progressHistory = new Map();
@@ -52,7 +53,8 @@ userSchema.methods.getProgressHistory = async function () {
         }
       });
     }
-    return progressHistory;
+    this.progressHistory = progressHistory;
+    await this.save();
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     throw err;
