@@ -1,5 +1,5 @@
 {
-  "name": "scholarapi-node",
+  "name": "scholarapi",
   "version": "0.1.0",
   "description": "API for the Scholar app.",
   "main": "app.js",
@@ -14,18 +14,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/marcmarina/ScholarAPI-Node.git"
+    "url": "git+ssh://git@github.com/marcmarina/ScholarAPI.git"
   },
   "author": "Marc marina",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/marcmarina/ScholarAPI-Node/issues"
+    "url": "https://github.com/marcmarina/ScholarAPI/issues"
   },
-  "homepage": "https://github.com/marcmarina/ScholarAPI-Node#readme",
+  "homepage": "https://github.com/marcmarina/ScholarAPI#readme",
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^7.2.0",
     "nodemon": "^2.0.4",
+    "semver": "^7.3.2",
     "sinon": "^9.0.2"
   },
   "dependencies": {

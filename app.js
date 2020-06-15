@@ -19,6 +19,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res, next) => {
+  let response = require("./package.json");
+  delete response["repository"];
+  res.status(200).json(response);
+});
+
 const userRoutes = require("./routes/user");
 app.use(userRoutes);
 
