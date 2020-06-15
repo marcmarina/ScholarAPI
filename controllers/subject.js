@@ -72,10 +72,8 @@ exports.progressHistory = async (req, res, next) => {
     const subject = await Subject.findById(subjectId);
     if (!subject)
       return res.status(404).json({ errors: ["Subject not found."] });
-    console.log(await subject.getProgressHistory());
-    res
-      .status(200)
-      .json(Object.fromEntries(await subject.getProgressHistory()));
+
+    res.status(200).json(Object.fromEntries(subject.progressHistory));
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);

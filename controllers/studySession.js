@@ -4,6 +4,7 @@ const moment = require("moment");
 const StudySession = require("../models/StudySession");
 const Subject = require("../models/Subject");
 const ErrorHandler = require("../util/error-handler");
+const User = require("../models/User");
 
 // Get all the subjects for the given subject
 exports.index = async (req, res, next) => {
@@ -38,6 +39,9 @@ exports.create = async (req, res, next) => {
     const subject = await Subject.findById(subjectId);
     if (!subject)
       res.status(404).json({ errors: { subject: ["Subject not found."] } });
+
+    const user = await User.findById(req.userId);
+
     const session = new StudySession({
       duration: duration,
       date: date,
@@ -46,6 +50,8 @@ exports.create = async (req, res, next) => {
     const result = await session.save();
     subject.studySessions.push(result._id);
     await subject.save();
+    await subject.updateProgressHistory();
+    await user.updateProgressHistory();
     res.status(201).json();
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;

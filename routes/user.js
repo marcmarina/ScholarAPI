@@ -65,4 +65,6 @@ router.delete("/users", isAuth, userController.delete);
 
 router.get("/users/progressHistory", isAuth, userController.progressHistory);
 
+router.patch("/users/changepassword", isAuth, userController.changePassword);
+
 module.exports = router;
