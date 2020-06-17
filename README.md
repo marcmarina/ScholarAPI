@@ -1,5 +1,5 @@
 # API for the Scholar app
-[![node](https://img.shields.io/badge/Node.js-v.12.X-brightgreen)](https://nodejs.org)
+[![node](https://img.shields.io/badge/Node.js-v.14.X-brightgreen)](https://nodejs.org)
 [![node](https://img.shields.io/badge/Express-v.4.17.X-brightgreen)](https://expressjs.com/)
 [![mongoose](https://img.shields.io/badge/Mongoose-v.5.9.X-brightgreen)](https://mongoosejs.com/)
 
