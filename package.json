@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/marcmarina/ScholarAPI.git"
+    "url": "git+https://github.com/marcmarina/ScholarAPI.git"
   },
   "author": "Marc marina",
   "license": "ISC",
