@@ -1,8 +1,20 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const moment = require("moment");
+import mongoose, { Schema, Document } from 'mongoose';
+import moment from 'moment';
 
-const StudySession = require("./StudySession");
+import StudySession from './StudySession';
+import { IUser } from './User';
+import { IStudySession } from './StudySession';
+
+export interface ISubject extends Document {
+  name: string;
+  targetHours: number;
+  frequencyBreaks: number;
+  user: IUser['_id'];
+  studySessions: Array<Schema.Types.ObjectId>;
+  progressHistory: Map<Date, number>;
+
+  updateProgressHistory(): void;
+}
 
 const subjectSchema = new Schema(
   {
@@ -20,12 +32,12 @@ const subjectSchema = new Schema(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     studySessions: [
       {
         type: Schema.Types.ObjectId,
-        ref: "StudySession",
+        ref: 'StudySession',
       },
     ],
     progressHistory: Map,
@@ -34,7 +46,8 @@ const subjectSchema = new Schema(
 );
 
 subjectSchema.methods.updateProgressHistory = async function () {
-  let progressHistory = new Map();
+  let progressHistory = new Map(),
+    v;
   try {
     const studySessions = await StudySession.find({
       subject: this._id,
@@ -45,9 +58,9 @@ subjectSchema.methods.updateProgressHistory = async function () {
       v *= 100;
       v = Math.fround(v);
       const key = moment(session.date)
-        .startOf("isoWeek")
+        .startOf('isoWeek')
         .toISOString()
-        .replace(/\./g, "-");
+        .replace(/\./g, '-');
 
       if (progressHistory.has(key)) {
         progressHistory.set(key, progressHistory.get(key) + v);
@@ -63,4 +76,4 @@ subjectSchema.methods.updateProgressHistory = async function () {
   }
 };
 
-module.exports = mongoose.model("Subject", subjectSchema);
+export default mongoose.model<ISubject>('Subject', subjectSchema);

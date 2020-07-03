@@ -1,6 +1,18 @@
-const mongoose = require("mongoose");
-const Subject = require("./Subject");
-const Schema = mongoose.Schema;
+import mongoose, { Schema, Document } from 'mongoose';
+
+import Subject from './Subject';
+
+export interface IUser extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  emailVerifiedAt: Date;
+  subjects: Array<Schema.Types.ObjectId>;
+  progressHistory: Map<Date, number>;
+
+  updateProgressHistory(): void;
+}
 
 const userSchema = new Schema(
   {
@@ -26,7 +38,7 @@ const userSchema = new Schema(
     subjects: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Subject",
+        ref: 'Subject',
       },
     ],
     progressHistory: Map,
@@ -40,7 +52,7 @@ userSchema.methods.updateProgressHistory = async function () {
   try {
     const subjects = await Subject.find({ user: this._id });
     const progressHistory = new Map();
-    for (s of subjects) {
+    for (let s of subjects) {
       const subjectHistory = await s.progressHistory;
       subjectHistory.forEach((v, k) => {
         v = v > 100 ? 100 : v;
@@ -61,4 +73,4 @@ userSchema.methods.updateProgressHistory = async function () {
   }
 };
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model<IUser>('User', userSchema);

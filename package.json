@@ -1,31 +1,23 @@
 {
-  "name": "scholarapi",
-  "version": "0.1.1",
-  "description": "API for the Scholar app.",
-  "main": "app.js",
-  "engines": {
-    "node": "14.5.0",
-    "npm": "6.14.4"
-  },
+  "name": "scholarapi-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc-watch --onSuccess \"node ./dist/index.js\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marcmarina/ScholarAPI.git"
-  },
-  "author": "Marc marina",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/marcmarina/ScholarAPI/issues"
-  },
-  "homepage": "https://github.com/marcmarina/ScholarAPI#readme",
   "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.6",
+    "@types/mongoose": "^5.7.29",
+    "@types/node": "^14.0.14",
     "chai": "^4.2.0",
     "mocha": "^7.2.0",
-    "nodemon": "^2.0.4",
     "semver": "^7.3.2",
     "sinon": "^9.0.2"
   },
@@ -38,6 +30,8 @@
     "express-validator": "^6.5.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
-    "mongoose": "^5.9.19"
+    "mongoose": "^5.9.19",
+    "tsc-watch": "^4.2.9",
+    "typescript": "^3.9.6"
   }
 }
