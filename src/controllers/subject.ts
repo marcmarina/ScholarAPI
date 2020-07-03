@@ -1,10 +1,10 @@
-const { validationResult } = require("express-validator");
-const User = require("../models/User");
-const Subject = require("../models/Subject");
+import { validationResult } from 'express-validator';
+import User from '../models/User';
+import Subject from '../models/Subject';
 
-const ErrorHandler = require("../util/error-handler");
+import ErrorHandler from '../utils/error-handler';
 
-exports.index = async (req, res, next) => {
+export const index = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
   if (errorHandler.errors.size > 0)
@@ -19,7 +19,7 @@ exports.index = async (req, res, next) => {
   }
 };
 
-exports.create = async (req, res, next) => {
+export const create = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
   if (errorHandler.errors.size > 0)
@@ -51,12 +51,12 @@ exports.create = async (req, res, next) => {
 };
 
 // Returns all subjects for the authenticated user
-exports.show = async (req, res, next) => {
+export const show = async (req, res, next) => {
   const errorHandler = new ErrorHandler();
   try {
     const subject = await Subject.findById(req.params.subjectId);
     if (!subject) {
-      errorHandler.addError("subject", "Subject not found.");
+      errorHandler.addError('subject', 'Subject not found.');
       return res.status(404).json({ errors: errorHandler.getErrors() });
     }
     res.status(200).json(subject);
@@ -66,14 +66,14 @@ exports.show = async (req, res, next) => {
   }
 };
 
-exports.progressHistory = async (req, res, next) => {
+export const progressHistory = async (req, res, next) => {
   const subjectId = req.params.subjectId;
   try {
     const subject = await Subject.findById(subjectId);
     if (!subject)
-      return res.status(404).json({ errors: ["Subject not found."] });
+      return res.status(404).json({ errors: ['Subject not found.'] });
 
-    res.status(200).json(Object.fromEntries(subject.progressHistory));
+    res.status(200).json(subject.progressHistory);
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);

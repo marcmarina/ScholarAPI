@@ -1,16 +1,16 @@
-const { validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import { validationResult } from 'express-validator';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-const User = require("../models/User");
-const Subject = require("../models/Subject");
-const StudySession = require("../models/StudySession");
+import User from '../models/User';
+import Subject from '../models/Subject';
+import StudySession from '../models/StudySession';
 
-const ErrorHandler = require("../util/error-handler");
-const Utils = require("../util/utils");
-const env = require("../util/env");
+import ErrorHandler from '../utils/error-handler';
+import * as Utils from '../utils/utils';
+import { getSecretKey } from '../utils/env';
 
-exports.login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
   if (errorHandler.errors.size > 0) {
@@ -26,8 +26,8 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email: email });
     if (!user) {
       errorHandler.addError(
-        "credentials",
-        "These credentials do not match our records."
+        'credentials',
+        'These credentials do not match our records.'
       );
       return res.status(404).json({ errors: errorHandler.getErrors() });
     }
@@ -38,13 +38,13 @@ exports.login = async (req, res, next) => {
           email: user.email,
           userId: user._id,
         },
-        env.getSecretKey()
+        getSecretKey()
       );
       return res.status(200).json({ userId: user._id, token: token });
     } else {
       errorHandler.addError(
-        "credentials",
-        "These credentials do not match our records."
+        'credentials',
+        'These credentials do not match our records.'
       );
       return res.status(404).json({ errors: errorHandler.getErrors() });
     }
@@ -56,7 +56,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.signup = async (req, res, next) => {
+export const signup = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
   if (errorHandler.errors.size > 0) {
@@ -88,11 +88,11 @@ exports.signup = async (req, res, next) => {
 };
 
 // Shows the info of the authenticated user
-exports.show = async (req, res, next) => {
+export const show = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId).populate("subjects");
+    const user = await User.findById(req.userId).populate('subjects');
     if (!user)
-      return res.status(404).json({ errors: { user: ["User not found."] } });
+      return res.status(404).json({ errors: { user: ['User not found.'] } });
     res.status(200).json(user);
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
@@ -100,7 +100,7 @@ exports.show = async (req, res, next) => {
   }
 };
 
-exports.delete = async (req, res, next) => {
+export const destroy = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
     const subjectIds = [...user.subjects];
@@ -122,21 +122,21 @@ exports.delete = async (req, res, next) => {
   }
 };
 
-exports.progressHistory = async (req, res, next) => {
+export const progressHistory = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
-    res.status(200).json(Object.fromEntries(user.progressHistory));
+    res.status(200).json(user.progressHistory);
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
     next(err);
   }
 };
 
-exports.changePassword = async (req, res, next) => {
+export const changePassword = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
     if (!user)
-      return res.status(404).json({ errors: { user: ["User not found."] } });
+      return res.status(404).json({ errors: { user: ['User not found.'] } });
 
     const isEqual = await bcrypt.compare(req.body.oldPassword, user.password);
 
@@ -144,7 +144,7 @@ exports.changePassword = async (req, res, next) => {
       user.password = await Utils.encryptString(req.body.newPassword);
     } else {
       return res.status(403).json({
-        errors: { oldPassword: ["The current password is wrong."] },
+        errors: { oldPassword: ['The current password is wrong.'] },
       });
     }
 

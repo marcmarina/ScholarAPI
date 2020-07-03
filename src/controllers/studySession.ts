@@ -1,21 +1,21 @@
-const { validationResult } = require("express-validator");
-const moment = require("moment");
+import { validationResult } from 'express-validator';
+import moment from 'moment';
 
-const StudySession = require("../models/StudySession");
-const Subject = require("../models/Subject");
-const ErrorHandler = require("../util/error-handler");
-const User = require("../models/User");
+import StudySession from '../models/StudySession';
+import Subject from '../models/Subject';
+import ErrorHandler from '../utils/error-handler';
+import User from '../models/User';
 
 // Get all the subjects for the given subject
-exports.index = async (req, res, next) => {
+export const index = async (req, res, next) => {
   const subjectId = req.params.subjectId;
 
   try {
-    const subject = await Subject.findById(subjectId).populate("studySessions");
+    const subject = await Subject.findById(subjectId).populate('studySessions');
     if (!subject)
       return res.status(404).json({
         errors: {
-          subject: ["Subject not found."],
+          subject: ['Subject not found.'],
         },
       });
 
@@ -26,7 +26,7 @@ exports.index = async (req, res, next) => {
   }
 };
 
-exports.create = async (req, res, next) => {
+export const create = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
   if (errorHandler.errors.size > 0)
     return res.status(422).json({ errors: errorHandler.getErrors() });
@@ -38,7 +38,7 @@ exports.create = async (req, res, next) => {
   try {
     const subject = await Subject.findById(subjectId);
     if (!subject)
-      res.status(404).json({ errors: { subject: ["Subject not found."] } });
+      res.status(404).json({ errors: { subject: ['Subject not found.'] } });
 
     const user = await User.findById(req.userId);
 
@@ -59,17 +59,19 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.delete = async (req, res, next) => {
+export const destroy = async (req, res, next) => {
   const studySessionId = req.params.studySessionId;
   try {
     const studySession = await StudySession.findById(studySessionId);
     if (!studySession)
       return res
         .status(404)
-        .json({ errors: { studySession: ["Session not found."] } });
+        .json({ errors: { studySession: ['Session not found.'] } });
 
     const subject = await Subject.findById(studySession.subject);
-    subject.studySessions.pull(studySession._id);
+    subject.studySessions = subject.studySessions.filter(
+      i => i != studySession.id
+    );
     await subject.save();
     await studySession.remove();
     res.status(200).json();

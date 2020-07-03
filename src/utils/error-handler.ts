@@ -1,10 +1,15 @@
-class ErrorHandler {
-  constructor(errors) {
+import { Result, ValidationError } from 'express-validator';
+import { mapToJSON } from './utils';
+
+export default class ErrorHandler {
+  errors: Map<string, Array<string>>;
+
+  constructor(errors?: Result<ValidationError>) {
     this.errors = new Map();
     if (errors) this.populate(errors);
   }
 
-  populate(errors) {
+  private populate(errors) {
     errors.array().forEach(value => {
       if (this.errors.has(value.param)) {
         this.errors.get(value.param).push(value.msg);
@@ -23,8 +28,10 @@ class ErrorHandler {
   }
 
   getErrors() {
-    return Object.fromEntries(this.errors);
+    return mapToJSON(this.errors);
   }
 }
 
-module.exports = ErrorHandler;
+type ObjectFromEntries<Entries extends [keyof any, any][]> = {
+  [K in Entries[number][0]]: Extract<Entries[number], [K, any]>[1];
+};

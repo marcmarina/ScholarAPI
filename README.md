@@ -1,7 +1,7 @@
 # API for the Scholar app
-[![node](https://img.shields.io/badge/Node.js-v.12.X-brightgreen)](https://nodejs.org)
-[![node](https://img.shields.io/badge/Express-v.4.17.X-brightgreen)](https://expressjs.com/)
-[![mongoose](https://img.shields.io/badge/Mongoose-v.5.9.X-brightgreen)](https://mongoosejs.com/)
+[![node](https://img.shields.io/badge/Node.js-v.14.X-brightgreen?style=flat-square)](https://nodejs.org)
+[![node](https://img.shields.io/badge/Express-v.4.17.X-brightgreen?style=flat-square)](https://expressjs.com/)
+[![mongoose](https://img.shields.io/badge/Mongoose-v.5.9.X-brightgreen?style=flat-square)](https://mongoosejs.com/)
 
 ## Introduction
 This serves as the REST API that powers my final year project, [Scholar](https://github.com/marcmarina/Scholar). The API for that project was originally developed with Laravel, but I have now remade it with Node.
