@@ -14,10 +14,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+// app.get('/', (req, res, next) => {
+//   const response = require('../package.json');
+//   delete response['repository'];
+//   res.status(200).json(response);
+// });
+
 app.get('/', (req, res, next) => {
-  const response = require('../package.json');
-  delete response['repository'];
-  res.status(200).json(response);
+  res.status(200).json({ deploy: 'working' });
 });
 
 app.use(UserRoutes);

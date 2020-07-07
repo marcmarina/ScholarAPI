@@ -1,10 +1,14 @@
-language: node_js  
-node_js:  
-  - "node"
-
-script:  
-  - yarn install
-
-after_script:  
-  - yarn test
-  - yarn build
+language: node_js
+node_js:
+- node
+script:
+- yarn install
+after_script:
+- yarn test
+- yarn build
+deploy:
+  provider: heroku
+  on: develop
+  api_key:
+    secure: R1e3HChefyAOFB6b2HO+CniFHeO8m6ftY7c/Miujcir0af51tidR59TYhIJikqdC5PM606yqWdFaRTagiqJZ1RRG7LhvI0jE/khR0bA9baZPB0Gj2PWsZIc5wNZZ0Gz7kFx4LlsyHBLW/PyROoMilelZ9C1W6MLvJfLsYTTr82Emb0PCCqoW7q9S0XErT3bKwL6UR/dIcQr9U/tlr4prMLZskA9X4AVcFHkcayEkV/cdWfiXNRfJSBY1A1hnB2w2OJYkNuUjyz/I19/XP4PTAx7puLOK2xAj+dU2SFc7wIqZP4080oy5FXdaWeeCGfL+EnIvIEdnDWDFwBdq6S5gNQU1VBPL5qSMP7UtI8Ddwx/ZtvbkV5rDCwsJx7/fxCoIVYRVXimK3Qn1HtL/55mqk+3w6onDYtV1g/spbFufKReiSZne9dw4eggRkFjzIafXjWPhd42qZPM1vIpg00Dv3/sRd2P/H473u9kFmkKGsBzC1T0qr6lFGMmdBvdZQZeCtAcN0o5Q/gV6P6k+3WUbUGNyx4VTt8oiljIYHGtvnwQBPJjoGWhf+U5a9Mu1at1xW+XPkzvYKdoS6N1Z64QgBkmFzrprDuyfosz7qUjOBT9vh5foDHU+ubO8qt0YdkkYC0DpfF+jq1BE4aLrEwKX2nLGhG+/tC4TCQZPeseVxpQ=
+  app: scholarapi

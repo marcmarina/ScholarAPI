@@ -7,8 +7,7 @@
     "start": "node build/index.js",
     "test": "mocha",
     "dev": "tsc-watch --onSuccess \"node ./build/index.js\"",
-    "build": "tsc",
-    "postinstall": "npm run build"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Marc Marina",
