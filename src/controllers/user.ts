@@ -7,29 +7,28 @@ import Subject from '../models/Subject';
 import StudySession from '../models/StudySession';
 
 import ErrorHandler from '../utils/error-handler';
+import CustomError from '../utils/CustomError';
 import * as Utils from '../utils/utils';
 import { getSecretKey } from '../utils/env';
 
 export const login = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
-  if (errorHandler.errors.size > 0) {
-    return res.status(422).json({
-      errors: errorHandler.getErrors(),
-    });
-  }
-
-  const email = req.body.email;
-  const password = req.body.password;
-
   try {
+    if (errorHandler.errors.size > 0) {
+      const error = new CustomError(errorHandler.getErrors());
+      throw error;
+    }
+
+    const email = req.body.email;
+    const password = req.body.password;
     const user = await User.findOne({ email: email });
     if (!user) {
       errorHandler.addError(
         'credentials',
         'These credentials do not match our records.'
       );
-      return res.status(404).json({ errors: errorHandler.getErrors() });
+      throw new CustomError(errorHandler.getErrors());
     }
     const isEqual = await bcrypt.compare(password, user.password);
     if (isEqual) {
@@ -46,7 +45,7 @@ export const login = async (req, res, next) => {
         'credentials',
         'These credentials do not match our records.'
       );
-      return res.status(404).json({ errors: errorHandler.getErrors() });
+      throw new CustomError(errorHandler.getErrors());
     }
   } catch (err) {
     if (!err.statusCode) {
