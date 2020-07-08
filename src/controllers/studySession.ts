@@ -5,19 +5,19 @@ import StudySession from '../models/StudySession';
 import Subject from '../models/Subject';
 import ErrorHandler from '../utils/error-handler';
 import User from '../models/User';
+import CustomError from '../utils/CustomError';
 
-// Get all the subjects for the given subject
+// Get all the sessions for the given subject
 export const index = async (req, res, next) => {
   const subjectId = req.params.subjectId;
 
   try {
     const subject = await Subject.findById(subjectId).populate('studySessions');
-    if (!subject)
-      return res.status(404).json({
-        errors: {
-          subject: ['Subject not found.'],
-        },
-      });
+    if (!subject) {
+      const errorHandler = new ErrorHandler();
+      errorHandler.addError('subject', 'Subject not found.');
+      throw new CustomError(errorHandler.getErrors(), 404);
+    }
 
     res.status(200).json(subject.studySessions);
   } catch (err) {
@@ -29,7 +29,7 @@ export const index = async (req, res, next) => {
 export const create = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
   if (errorHandler.errors.size > 0)
-    return res.status(422).json({ errors: errorHandler.getErrors() });
+    throw new CustomError(errorHandler.getErrors(), 422);
 
   const subjectId = req.body.subjectId;
   const duration = req.body.duration;
@@ -37,8 +37,10 @@ export const create = async (req, res, next) => {
 
   try {
     const subject = await Subject.findById(subjectId);
-    if (!subject)
-      res.status(404).json({ errors: { subject: ['Subject not found.'] } });
+    if (!subject) {
+      errorHandler.addError('studySession', 'Session not found.');
+      throw new CustomError(errorHandler.getErrors(), 404);
+    }
 
     const user = await User.findById(req.userId);
 
@@ -63,10 +65,11 @@ export const destroy = async (req, res, next) => {
   const studySessionId = req.params.studySessionId;
   try {
     const studySession = await StudySession.findById(studySessionId);
-    if (!studySession)
-      return res
-        .status(404)
-        .json({ errors: { studySession: ['Session not found.'] } });
+    if (!studySession) {
+      const errorHandler = new ErrorHandler();
+      errorHandler.addError('studySession', 'Session not found.');
+      throw new CustomError(errorHandler.getErrors(), 404);
+    }
 
     const subject = await Subject.findById(studySession.subject);
     subject.studySessions = subject.studySessions.filter(

@@ -10,3 +10,7 @@ deploy:
   api_key:
     secure: nAYSOIuzz+9+WPQysBvGrJExGD3GVU6YzMHeTk/1lxDjjTceeHQgFNsSeDVhVj+aSAkspUl6RJ1kF6cS4jYKrTdZcSX2Yh6iC5TQ1jegnao+5E7X8sFBKzD0O5tUQbEuL93xaBrqfN9xpX03uqcFs+BhUIb2Ly/lFuz8/j4VOaEQoQIK9s0LRaCXQclNo4cQ3bZlkPgv+t87SOd3nTMofBU9+gAxhqa8QPZMdqB1Lx7yfnYjm8TwaOywRNMjI/8APgc4m6QGCvZoY05abHQ6D1jIu9rg2fVT9V3/+VitfoVVRuThhQOf4NPOd0S0Xp/XCEx1/8bWIxk41RPb+aX3Nvkg4n/cTeHzhbMje6eRnbcazmEpuvrNjx1RP0rt6EN7Boan6EMMl/9Cg5cQEB3NAz6A7JI6wim5hNwJJ4ju9dmBtUo277a7cH2XH3iP55+znvO6Doz6UPJuIFYlq23hewtVjjS7+esWQpKZPgXLPF4RVu9qycWZ15pfkI/KwVU2srNgChnA9/p5mMBZh1ECIXznmHow7DGhewMZdqv790r2e1Cr5krQHF2kCGCX1AOk4cAdmbv3BqvIutEylcLIuc0ATVMIa3g256gPihfRbqQCVZ3CNjFIVHujiny/ANhqzNwILLPmvbvFeCfXRPpFL1qQx1D+k5ZS4+M1Avdsgcc=
   app: scholarapi
+# branches:
+#   only:
+#     master
+#     develop

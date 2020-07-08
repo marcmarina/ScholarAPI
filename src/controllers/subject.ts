@@ -3,12 +3,13 @@ import User from '../models/User';
 import Subject from '../models/Subject';
 
 import ErrorHandler from '../utils/error-handler';
+import CustomError from '../utils/CustomError';
 
 export const index = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
   if (errorHandler.errors.size > 0)
-    return res.status(401).json({ errors: errorHandler.getErrors() });
+    throw new CustomError(errorHandler.getErrors(), 422);
 
   try {
     const subjects = await Subject.find({ user: req.userId });
@@ -23,7 +24,7 @@ export const create = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
   if (errorHandler.errors.size > 0)
-    return res.status(422).json({ errors: errorHandler.getErrors() });
+    throw new CustomError(errorHandler.getErrors(), 422);
 
   const name = req.body.name;
   const targetHours = req.body.targetHours;
@@ -57,7 +58,7 @@ export const show = async (req, res, next) => {
     const subject = await Subject.findById(req.params.subjectId);
     if (!subject) {
       errorHandler.addError('subject', 'Subject not found.');
-      return res.status(404).json({ errors: errorHandler.getErrors() });
+      throw new CustomError(errorHandler.getErrors(), 404);
     }
     res.status(200).json(subject);
   } catch (err) {
@@ -70,9 +71,11 @@ export const progressHistory = async (req, res, next) => {
   const subjectId = req.params.subjectId;
   try {
     const subject = await Subject.findById(subjectId);
-    if (!subject)
-      return res.status(404).json({ errors: ['Subject not found.'] });
-
+    if (!subject) {
+      const errorHandler = new ErrorHandler();
+      errorHandler.addError('subject', 'Subject not found.');
+      throw new CustomError(errorHandler.getErrors(), 404);
+    }
     res.status(200).json(subject.progressHistory);
   } catch (err) {
     if (!err.statusCode) err.statusCode = 500;
