@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { UserRoutes, SubjectRoutes, StudySessionRoutes } from './routes';
 import { getMongoDBUri, getPort } from './utils/env';
 import CustomError from './utils/CustomError';
+import { type } from 'os';
 
 dotenv.config();
 
@@ -26,11 +27,12 @@ app.use(SubjectRoutes);
 app.use(StudySessionRoutes);
 
 app.use((error: CustomError, req, res, next) => {
-  console.log(error);
   const status = error.statusCode || 500;
-  res.status(status).json({
-    errors: error.getErrors(),
-  });
+  let result = { server: [error.message] };
+  if (error instanceof CustomError) {
+    result = error.getErrors();
+  }
+  res.status(status).json({ errors: result });
 });
 
 mongoose

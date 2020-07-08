@@ -3,7 +3,7 @@ node_js:
 - node
 script:
 - yarn install
-# - yarn test
+- yarn test
 deploy:
   provider: heroku
   on: master

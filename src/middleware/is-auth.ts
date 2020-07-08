@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken';
 
 import { getSecretKey } from '../utils/env';
-import CustomError from '../utils/CustomError';
 
 export default (req, res, next) => {
   const authHeader = req.get('Authorization');
   if (!authHeader) {
-    const error = new CustomError('Not authenticated.', 401);
+    const error = new Error('Not authenticated.');
     throw error;
   }
   const token = authHeader.split(' ')[1];
@@ -18,7 +17,7 @@ export default (req, res, next) => {
     throw err;
   }
   if (!decodedToken) {
-    const error = new CustomError('Not authenticated.', 401);
+    const error = new Error('Not authenticated.');
     throw error;
   }
   req.userId = decodedToken.userId;

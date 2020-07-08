@@ -58,15 +58,15 @@ export const login = async (req, res, next) => {
 export const signup = async (req, res, next) => {
   const errorHandler = new ErrorHandler(validationResult(req));
 
-  if (errorHandler.errors.size > 0)
-    throw new CustomError(errorHandler.getErrors(), 422);
-
-  const email = req.body.email;
-  const password = req.body.password;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-
   try {
+    if (errorHandler.errors.size > 0)
+      throw new CustomError(errorHandler.getErrors(), 422);
+
+    const email = req.body.email;
+    const password = req.body.password;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+
     const encryptedPassword = await Utils.encryptString(password);
     const user = new User({
       email: email,

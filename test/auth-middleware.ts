@@ -31,7 +31,9 @@ describe('Auth Middleware', () => {
         return 'Bearer xyz';
       },
     };
-    expect(authMiddleware.bind(this, req, {}, () => {})).to.throw();
+    expect(authMiddleware.bind(this, req, {}, () => {})).to.throw(
+      'jwt malformed'
+    );
   });
 
   // it('should yield a userId after decoding the token', function () {
