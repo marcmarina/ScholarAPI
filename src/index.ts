@@ -7,7 +7,6 @@ import dotenv from 'dotenv';
 import { UserRoutes, SubjectRoutes, StudySessionRoutes } from './routes';
 import { getMongoDBUri, getPort } from './utils/env';
 import CustomError from './utils/CustomError';
-import { type } from 'os';
 
 dotenv.config();
 
